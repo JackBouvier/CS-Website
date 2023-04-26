@@ -73,8 +73,8 @@ header i {
 
 /* Index item icon styles on hover */
 .index i:hover {
-    font-size: 1.5rem;
     cursor: pointer;
+    color: rgb(0, 81, 255);
 }
 
 /* Selected index item styles */
@@ -97,8 +97,8 @@ header i {
 /* Index control button styles */
 #index-control {
     position: absolute;
-    top: 7.4rem;
-    left: 20.3rem;
+    top: 7.44rem;
+    left: 20rem;
     font-size: 25px;
     z-index: 1;
     color: white;
