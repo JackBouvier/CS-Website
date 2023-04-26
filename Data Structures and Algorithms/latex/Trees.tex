@@ -1,21 +1,76 @@
 
 % Packages
-\documentclass{amsart}
-\usepackage{geometry}
+\documentclass[12pt]{article}
+\usepackage[margin=2.5cm]{geometry}
 \usepackage{lipsum}
 \usepackage{titlesec, titletoc}
 \usepackage[svgnames]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{mdframed}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,mathtools}
+\usepackage[osf]{mathpazo}
+
+
 
 % Formating setup
-\geometry{paperheight=9000pt, top=40pt}
+\footskip = 1cm
+\setlength{\parindent}{0pt}
 \pdfpxdimen=1in
-\divide\pdfpxdimen by 600
-\titleformat{\section}[block]{\sffamily\Large\bfseries}{\thesection}{.5em}{\textcolor{Black}
-{\titlerule[1.5pt]}\\\sffamily}[\vspace*{-2.5mm}\textcolor{Black}{\titlerule[1.5pt]}]
+\parindent = 0pt
+\definecolor{myBlue}{RGB}{0, 81, 255}
+\titleformat{\section}[block]{\sffamily\large\bfseries}{\thesection}{.5em}{\textcolor{myBlue}
+{\titlerule[1.5pt]}\\\sffamily}[\vspace*{-3mm}\textcolor{myBlue}{\titlerule[1.5pt]}]
+\titleformat{\subsection}{\small\sffamily\bfseries}{\thesubsection}{.5em}{\textcolor{Black}}
+\newcounter{boxedlistcounter}
+\newenvironment{pseudo}{%
+  \refstepcounter{boxedlistcounter}%
+  \mdframed[
+    linecolor=black, % color of the border
+    linewidth=1.5pt, % thickness of the border
+    roundcorner=10pt, % radius of the corners
+    innertopmargin=\baselineskip, % space at the top of the box
+    innerbottommargin=\baselineskip, % space at the bottom of the box
+  ]
+  \list{\arabic{boxedlistcounter}.}{%
+    \usecounter{boxedlistcounter}
+    \setlength{\leftmargin}{10pt}% adjust as needed
+    \setlength{\rightmargin}{10pt}% adjust as needed
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\partopsep}{0pt}%
+    \setlength{\topsep}{0pt}%
+    \setlength{\labelwidth}{5pt}% adjust as needed
+    \setlength{\labelsep}{5pt}% adjust as needed
+    \fontsize{12pt}{14pt}\selectfont % add font size command here
+    \mdseries % add font series command here
+  }%
+}{%
+  \endmdframed%
+  \vspace{10pt}%
+}
 
+% Custom commands
+\newcommand{\for}[1]{\textbf{for} #1 \textbf{do}}
+\newcommand{\IF}[1]{\textbf{if} #1 \textbf{then}}
+\newcommand{\ELSE}{\textbf{else}}
+\newcommand{\return}[1]{\textbf{return} #1}
+\newcommand{\asign}{$\leftarrow$}
+\newcommand{\DEF}[2]{\textbf{def} #1(#2)}
+\newcommand{\1}{\space \quad}
+\newcommand{\2}{\quad \quad \quad}
+\newcommand{\3}{\quad \quad \quad \quad \space}
+\newcommand{\4}{\quad \quad \quad \quad \quad \quad}
+
+% Document start ------------------------------------------------------------------------------------
 \begin{document}
-
 \section{test}
+\subsection{test}
+
+\begin{pseudo}
+    \item \DEF{Function}{int 1}
+\end{pseudo}
 
 
 \end{document}
