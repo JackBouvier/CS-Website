@@ -42,7 +42,7 @@ header i {
 
 /* PDF container when the index is shown */
 .content-container.show-index .pdf-container {
-    width: calc(100% - 19.43rem);
+    width: calc(100% - 19rem);
 }
 
 /* Index styles */
