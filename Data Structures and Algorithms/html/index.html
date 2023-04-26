@@ -36,12 +36,10 @@
         const indexItems = document.querySelectorAll('.index-item');
         const pdfIframe = document.getElementById('pdf-iframe');
         const indexControl = document.getElementById('index-control');
-
         indexItems.forEach(item => {
             item.addEventListener('click', () => {
                 const pdfPath = item.getAttribute('data-pdf');
                 pdfIframe.src = pdfPath + '#zoom=100%';
-
                 indexItems.forEach(item => {
                     item.classList.remove('selected');
                 });
@@ -52,7 +50,6 @@
         indexControl.addEventListener('click', () => {
             const contentContainer = document.querySelector('.content-container');
             const index = document.querySelector('.index');
-
             contentContainer.classList.toggle('show-index');
             index.classList.toggle('show-index');
 
