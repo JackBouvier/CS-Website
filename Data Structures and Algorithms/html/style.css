@@ -74,6 +74,12 @@ header i{
 
 .pdf-container{
     width: 100%;
+    height: calc(100% - 7.6rem);
+}
+
+.pdf-container iframe {
+    width: 100%;
+    height: 100%;
 }
 
 #index-control{
@@ -91,3 +97,63 @@ header i{
 #index-control:hover{
     color: rgb(0, 81, 255);
 }
+
+@media only screen and (max-width: 768px) {
+    header {
+      font-size: 2rem;
+      padding: 1rem;
+      padding-left: 2.5rem;
+    }
+    
+    .index {
+      padding-left: 2.5rem;
+      padding-right: 4rem;
+    }
+    
+    .index i {
+      font-size: 1.3rem;
+    }
+    
+    .pdf-container {
+      height: calc(100% - 8rem);
+    }
+    
+    #index-control {
+      top: 6rem;
+      left: 1.5rem;
+      font-size: 1.3rem;
+      padding: 0.3rem 0.5rem;
+      border-radius: 1rem;
+    }
+}
+  
+@media only screen and (max-width: 480px) {
+    header {
+        font-size: 1.5rem;
+        padding: 0.8rem;
+        padding-left: 2rem;
+    }
+
+    .index {
+        padding-left: 2rem;
+        padding-right: 3rem;
+        gap: 2rem;
+    }
+
+    .index i {
+        font-size: 1.2rem;
+    }
+
+    .pdf-container {
+        height: calc(100% - 7rem);
+    }
+
+    #index-control {
+        top: 5.5rem;
+        left: 1rem;
+        font-size: 1.1rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.8rem;
+    }
+}
+  
