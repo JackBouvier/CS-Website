@@ -15,31 +15,79 @@ header{
     padding-left: 5rem;
 }
 
-.content-container{
+header i{
+    color: rgb(0, 81, 255);
+}
+
+.content-container {
     position: fixed;
     display: flex;
     flex-direction: row;
     height: 100%;
     width: 100%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
 }
 
-.index{
+.content-container.show-index {
+    transform: translateX(-311px);
+    width: calc(100% + 311px);
+}
+
+.content-container.show-index .pdf-container {
+    width: calc(100% - 311px);
+}
+
+.index {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: rgb(107, 107, 107);
-    color: white;
+    background: rgb(231, 231, 231);
+    color: black;
     padding-top: 4rem;
     padding-left: 5rem;
     padding-right: 8rem;
     gap: 3rem;
+    transition: all 0.5s ease-in-out;
+}
+
+.index.show-index {
+    transform: translateX(0%);
 }
 
 .index i{
     font-size: 1.5rem;
     font-style: normal;
+    font-weight: 800;
+    transition: 0.2s;
+}
+
+.index i:hover{
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.index-item.selected {
+    color: rgb(0, 81, 255);
 }
 
 .pdf-container{
     width: 100%;
+}
+
+#index-control{
+    position: absolute;
+    top: 7.6rem;
+    left: 20.5rem;
+    font-size: 1.5rem;
+    z-index: 1;
+    color: white;
+    background: rgba(50,54,57,255);
+    padding: 0.5rem 0.5rem;
+    border-radius: 2rem;
+}
+
+#index-control:hover{
+    color: rgb(0, 81, 255);
 }
