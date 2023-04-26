@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+}
+
+header{
+    font-size: 3rem;
+    font-weight: 600;
+    color: white;
+    background: rgb(30, 30, 30);
+    padding: 1.3rem;
+    padding-left: 5rem;
+}
+
+.content-container{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.index{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: rgb(107, 107, 107);
+    color: white;
+    padding-top: 4rem;
+    padding-left: 5rem;
+    padding-right: 8rem;
+    gap: 3rem;
+}
+
+.index i{
+    font-size: 1.5rem;
+    font-style: normal;
+}
+
+.pdf-container{
+    width: 100%;
+}
