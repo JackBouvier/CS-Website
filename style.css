@@ -6,15 +6,14 @@
     overscroll-behavior: none;
     scroll-behavior: smooth;
 }
-
+  
 /* Header styles */
 header {
     font-size: 2.4rem;
     font-weight: 600;
     color: white;
     background: rgb(30, 30, 30);
-    padding: 1.3rem;
-    padding-left: 5.2rem;
+    padding: 1.3rem 5.2rem 1.3rem 5.2rem;
 }
 
 /* Icon styles within header */
@@ -29,9 +28,6 @@ header i {
     flex-direction: row;
     height: 100%;
     width: 100%;
-    left: 0;
-    right: 0;
-    overflow: hidden;
 }
 
 /* Class to show the index */
@@ -52,9 +48,7 @@ header i {
     height: 100%;
     background: rgb(231, 231, 231);
     color: black;
-    padding-top: 4rem;
-    padding-left: 5.2rem;
-    padding-right: 7.8rem;
+    padding: 4rem 7.8rem 0 5.2rem;
     gap: 3rem;
 }
 
@@ -78,7 +72,7 @@ header i {
 }
 
 /* Selected index item styles */
-.index-item.selected {
+    .index-item.selected {
     color: rgb(0, 81, 255);
 }
 
@@ -102,7 +96,7 @@ header i {
     font-size: 25px;
     z-index: 1;
     color: white;
-    background: rgba(50,54,57,255);
+    background: rgba(50, 54, 57, 255);
     padding: 8px 8px;
     border-radius: 50%;
 }
@@ -113,33 +107,23 @@ header i {
 }
 
 /* Media quiries */
-@media only screen and (max-width: 1500px){
+@media only screen and (max-width: 1500px) {
     html {
         font-size: 95%;
     }
 }
-@media only screen and (max-width: 1300px){
+@media only screen and (max-width: 1300px) {
     html {
         font-size: 85%;
     }
 }
-@media only screen and (max-width: 1100px){
+@media only screen and (max-width: 1100px) {
     html {
         font-size: 75%;
     }
 }
-@media only screen and (max-width: 900px){
+@media only screen and (max-width: 900px) {
     html {
         font-size: 65%;
-    }
-}
-@media only screen and (max-width: 1100px){
-    html {
-        font-size: 55%;
-    }
-}
-@media only screen and (max-width: 1000px){
-    html {
-        font-size: 45%;
     }
 }
