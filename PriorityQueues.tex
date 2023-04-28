@@ -1,18 +1,15 @@
-
 % Packages
 \documentclass[12pt]{article}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{lipsum}
 \usepackage{titlesec, titletoc}
-\usepackage[svgnames]{xcolor}
+\usepackage[svgnames, table]{xcolor}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{mdframed}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amsthm,amsfonts,amssymb,mathtools}
 \usepackage[osf]{mathpazo}
-
-
 
 % Formating setup
 \footskip = 1cm
@@ -50,6 +47,34 @@
   \endmdframed%
   \vspace{10pt}%
 }
+\newcounter{boxedlistcounter2}
+\newenvironment{Proof}{%
+  \refstepcounter{boxedlistcounter2}%
+  \mdframed[
+    linecolor=black, % color of the border
+    linewidth=1.5pt, % thickness of the border
+    roundcorner=10pt, % radius of the corners
+    innertopmargin=\baselineskip, % space at the top of the box
+    innerbottommargin=\baselineskip, % space at the bottom of the box
+  ]
+  \list{\textbullet}{% <-- Use regular dot point here
+    \usecounter{boxedlistcounter2}
+    \setlength{\leftmargin}{10pt}% adjust as needed
+    \setlength{\rightmargin}{10pt}% adjust as needed
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\partopsep}{0pt}%
+    \setlength{\topsep}{0pt}%
+    \setlength{\labelwidth}{5pt}% adjust as needed
+    \setlength{\labelsep}{5pt}% adjust as needed
+    \fontsize{12pt}{14pt}\selectfont % add font size command here
+    \mdseries % add font series command here
+  }%
+}{%
+  \endlist% <-- Change the environment end command here
+  \endmdframed%
+  \vspace{10pt}%
+}
 
 % Custom commands
 \newcommand{\for}[1]{\textbf{for} #1 \textbf{do}}
@@ -72,5 +97,19 @@
     \item \DEF{Function}{int 1}
 \end{pseudo}
 
+\begin{Proof}
+  \item RTP
+\end{Proof}
+
+\begin{tabular}{|c|c|}
+  \hline
+  \rowcolor{myBlue}
+  \color{white}{\textbf{Column 1}} & \color{white}{\textbf{Column 2}} \\
+  \hline
+  Row 1, Cell 1 & Row 1, Cell 2 \\
+  \hline
+  Row 2, Cell 1 & Row 2, Cell 2 \\
+  \hline
+\end{tabular}
 
 \end{document}
