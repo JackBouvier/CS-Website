@@ -10,43 +10,33 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amsthm,amsfonts,amssymb,mathtools}
 \usepackage[osf]{mathpazo}
+\usepackage{enumitem}
 
 % Formating setup
-\footskip = 1cm
+\footskip = 1 cm
 \setlength{\parindent}{0pt}
 \pdfpxdimen=1in
 \parindent = 0pt
 \definecolor{myBlue}{RGB}{0, 81, 255}
 \titleformat{\section}[block]{\sffamily\large\bfseries}{\thesection}{.5em}{\textcolor{myBlue}
 {\titlerule[1.5pt]}\\\sffamily}[\vspace*{-3mm}\textcolor{myBlue}{\titlerule[1.5pt]}]
-\titleformat{\subsection}{\small\sffamily\bfseries}{\thesubsection}{.5em}{\textcolor{Black}}
+\titleformat{\subsection}{\large\sffamily\bfseries}{\thesubsection}{0.5em}{\textcolor{Black}}
 \newcounter{boxedlistcounter}
 \newenvironment{pseudo}{%
-  \refstepcounter{boxedlistcounter}%
+  \setcounter{boxedlistcounter}{0}% <-- Add this line to reset the counter
   \mdframed[
     linecolor=black, % color of the border
     linewidth=1.5pt, % thickness of the border
     roundcorner=10pt, % radius of the corners
-    innertopmargin=\baselineskip, % space at the top of the box
-    innerbottommargin=\baselineskip, % space at the bottom of the box
+    innertopmargin=0.6\baselineskip, % space at the top of the box
+    innerbottommargin=0.6\baselineskip, % space at the bottom of the box
   ]
-  \list{\arabic{boxedlistcounter}.}{%
-    \usecounter{boxedlistcounter}
-    \setlength{\leftmargin}{10pt}% adjust as needed
-    \setlength{\rightmargin}{10pt}% adjust as needed
-    \setlength{\itemsep}{0pt}%
-    \setlength{\parsep}{0pt}%
-    \setlength{\partopsep}{0pt}%
-    \setlength{\topsep}{0pt}%
-    \setlength{\labelwidth}{5pt}% adjust as needed
-    \setlength{\labelsep}{5pt}% adjust as needed
-    \fontsize{12pt}{14pt}\selectfont % add font size command here
-    \mdseries % add font series command here
-  }%
+  \fontsize{12pt}{14pt}\selectfont % add font size command here
+  \mdseries % add font series command here
 }{%
   \endmdframed%
-  \vspace{10pt}%
 }
+\newcommand{\I}{\par\stepcounter{boxedlistcounter}\arabic{boxedlistcounter}.\hspace{5pt}}
 \newcounter{boxedlistcounter2}
 \newenvironment{Proof}{%
   \refstepcounter{boxedlistcounter2}%
@@ -57,59 +47,308 @@
     innertopmargin=\baselineskip, % space at the top of the box
     innerbottommargin=\baselineskip, % space at the bottom of the box
   ]
-  \list{\textbullet}{% <-- Use regular dot point here
-    \usecounter{boxedlistcounter2}
-    \setlength{\leftmargin}{10pt}% adjust as needed
-    \setlength{\rightmargin}{10pt}% adjust as needed
-    \setlength{\itemsep}{0pt}%
-    \setlength{\parsep}{0pt}%
-    \setlength{\partopsep}{0pt}%
-    \setlength{\topsep}{0pt}%
-    \setlength{\labelwidth}{5pt}% adjust as needed
-    \setlength{\labelsep}{5pt}% adjust as needed
-    \fontsize{12pt}{14pt}\selectfont % add font size command here
-    \mdseries % add font series command here
-  }%
+  \fontsize{12pt}{14pt}\selectfont % add font size command here
+  \mdseries % add font series command here
 }{%
-  \endlist% <-- Change the environment end command here
   \endmdframed%
-  \vspace{10pt}%
 }
+\newcommand{\PI}{\par\textbullet\hspace{5pt}}
+\setlist[itemize]{itemsep=1pt}
 
 % Custom commands
 \newcommand{\for}[1]{\textbf{for} #1 \textbf{do}}
 \newcommand{\IF}[1]{\textbf{if} #1 \textbf{then}}
 \newcommand{\ELSE}{\textbf{else}}
 \newcommand{\return}[1]{\textbf{return} #1}
-\newcommand{\asign}{$\leftarrow$}
-\newcommand{\DEF}[2]{\textbf{def} #1(#2)}
+\newcommand{\assign}{ $\leftarrow$ }
+\newcommand{\DEF}[2]{\textbf{def} #1(#2):}
 \newcommand{\1}{\space \quad}
 \newcommand{\2}{\quad \quad \quad}
 \newcommand{\3}{\quad \quad \quad \quad \space}
 \newcommand{\4}{\quad \quad \quad \quad \quad \quad}
+\newcommand{\comment}[1]{\hfill \textit{\# #1}}
 
 % Document start ------------------------------------------------------------------------------------
 \begin{document}
-\section{test}
-\subsection{test}
 
-\begin{pseudo}
-    \item \DEF{Function}{int 1}
-\end{pseudo}
+% Section 1  ----------------------------------------------------------------------------------------
+\section{Index-Based Lists}
+\subsection{Abstract Data Types and Structures}
+\begin{itemize}
+    \item An abstract data type (ADT) is a specification of the desired behavior from the point of view 
+    of the user of the data, leaving the implementation details to the programmer.
+    \item A data structure is a concrete representation of data that is from the point 
+    of view of an implementer, not a user.
+\end{itemize}
 
-\begin{Proof}
-  \item RTP
-\end{Proof}
-
-\begin{tabular}{|c|c|}
+\subsection{Index-Based List methods}
+\begin{tabular}{|l|l|}
   \hline
   \rowcolor{myBlue}
-  \color{white}{\textbf{Column 1}} & \color{white}{\textbf{Column 2}} \\
+  \color{white}{\textbf{Method}} & \color{white}{\textbf{Description}} \\
   \hline
-  Row 1, Cell 1 & Row 1, Cell 2 \\
+  size() & (int) number of elements in the store \hspace{190pt} \\
   \hline
-  Row 2, Cell 1 & Row 2, Cell 2 \\
+  isEmpty() & (boolean) whether the list is empty \\
+  \hline
+  get(i) & return element at index i \\
+  \hline
+  set(i,e) & replace the element at i with e and return the replaced element\\
+  \hline
+  add(i,e) & insert element e at index i and shift up elements with indexes >= i \\
+  \hline
+  remove(i) & remove and return the element at index i and shift down indexes >= i\\
   \hline
 \end{tabular}
+
+\subsection{Array-based List}
+Time complexity of get(i) and set(i,e) is O(1) time, as they are independent of the size of the array (N) 
+or the represented list (n) as an array-based implimentation allows for random access.
+\begin{pseudo}
+  \I \DEF{get}{i: int}
+  \I \1\IF{$i < 0$ or $i >= n.size()$}
+  \I \2 \return{"Index out of bound"}
+  \I \1 \ELSE
+  \I \2 \return{A[i]}
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{set}{i: int, e: element}
+  \I \1 \IF{$i < 0$ or $i >= n.size()$}
+  \I \2 \return{"Index out of bound"}
+  \I \1 \ELSE
+  \I \2 result = A[i]
+  \I \2 A[i] = e
+  \I \2 \return{result}
+\end{pseudo}
+In an operation add(i, e), we must make room for the new element by shifting forward $n - i$ 
+elements A[i], $\ldots$, A[$n - 1$]. Time complexity is O(n) in the worst case that i = $0$.
+The same principles apply for remove(i).
+\begin{pseudo}
+  \I \DEF{add}{i: int, e: element}
+  \I \1 \IF{n = N}
+  \I \2 \return{"Array is full"}
+  \I \1 \IF{$i < n$}
+  \I \2 \for{j in [n-1, n-2, $\ldots$, i]}
+  \I \3 A[j+1] \assign A[j]
+  \I \1 A[i] \assign e
+  \I \1 n \assign n + 1
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{remove}{i: int}
+  \I \1 \IF{$i < 0$ or $i >= n$}
+  \I \2 \return{"Index out of bound"}
+  \I \1 e \assign A[i]
+  \I \1 \IF{$i < n - 1$}
+  \I \2 \for{j in [i+1, i+2, $\ldots$, n-1]}
+  \I \3 A[j] \assign A[j+1]
+  \I \1 n \assign n - 1
+  \I \1 \return{e}
+\end{pseudo}
+
+% Section 2  ----------------------------------------------------------------------------------------
+\section{Positional lists}
+ADT for a list where we store elements at “positions.”
+Position models the abstract notion of place where a single object
+is stored within a container data structure.
+Unlike index, this keeps referring to the same entry even after
+insertion/deletion happens elsewhere in the collection.
+
+\subsection{Positional List methods}
+\begin{tabular}{|l|l|}
+  \hline
+  \rowcolor{myBlue}
+  \color{white}{\textbf{Method}} & \color{white}{\textbf{Description}} \\
+  \hline
+  size() & (int) number of elements in the store \hspace{155pt} \\
+  \hline
+  isEmpty() & (boolean) whether the list is empty \\
+  \hline
+  first() & returns the position of first element (null if empty) \\
+  \hline
+  last() & returns the position of last element (null if empty)\\
+  \hline
+  before(p) & return the position immediately before p (null if p is first) \\
+  \hline
+  after(p)  & returns the position immediately after p (null if p last)\\
+  \hline
+  insertBefore(p, e)   & inserts e in front of the element at position p\\
+  \hline
+  insertAfter(p, e)  & inserts e following the element at position p\\
+  \hline
+  remove(p)  & remove and return the element at position p\\
+  \hline
+\end{tabular}
+
+\subsection{Singly linked Lists}
+A singly linked list is a concerete data structure that consistes of a sequence of nodes. The
+list is captured by a reference to the first node of the list, known as the head. Each node in 
+a singly linked lists stores its element and a link to the next node. The last node stores a 
+null reference instead of a link.
+\begin{pseudo}
+  \I \DEF{insertFirst}{e: element} \comment{O(1)}
+  \I \1 Instaniate a new node x
+  \I \1 Set e as element of x
+  \I \1 Set x.next to point to head
+  \I \1 Update head to point to x
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{removeFirst}{e: element} \comment{O(1)}
+  \I \1 Update head to point to next node
+  \I \1 Delete the former first node
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{insertBefore}{p, e} \comment{O(n)}
+  \I \1 To find the predecessor of p we need to follow the links from the “head”.
+\end{pseudo}
+
+\subsection{Doubly linked lists}
+A very natural way to implement a positional list is with a doublylinked list, so that it is easy/quick to find the position before.
+Each Node in a Doubly Linked List stores its element, and a link to the previous and next nodes.
+\begin{pseudo}
+  \I \DEF{insertBefore}{p, e} \comment{O(1)}
+  \I \1 Instaniate a new node x
+  \I \1 Set e as element of x
+  \I \1 Set x.next to point to p
+  \I \1 Set x.prev to point to p.prev
+  \I \1 Set p.prev.next to point to x
+  \I \1 Set p.prev to point to x
+  \I \1 \return{x}
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{remove}{p} \comment{O(1)}
+  \I \1 Set p.prev.next to point to p.next
+  \I \1 Set p.next.prev to point to p.prev
+  \I \1 \return{p.element}
+\end{pseudo}
+\begin{tabular}{|l|l|l|}
+  \hline
+  \rowcolor{myBlue}
+  \color{white}{\textbf{Method}} & \color{white}{\textbf{Description}} & \color{white}{\textbf{Time}} \\
+  \hline
+  size() \hspace{65pt} & (int) number of elements in the store \hspace{80pt} & O(1) \hspace{30pt} \\
+  \hline
+  isEmpty() & (boolean) whether the list is empty & O(1)\\
+  \hline
+  first() & returns p of first element (null if empty) & O(1)\\
+  \hline
+  last() & returns p of last element (null if empty) & O(1)\\
+  \hline
+  before(p) & return the position  before p (null if p is first) & O(1)\\
+  \hline
+  after(p)  & returns the position  after p (null if p last) & O(1)\\
+  \hline
+  insertBefore(p, e)   & inserts e in front of the element at position p & O(1)\\
+  \hline
+  insertAfter(p, e)  & inserts e following the element at position p & O(1)\\
+  \hline
+  remove(p)  & remove and return the element at position p & O(1)\\
+  \hline
+\end{tabular}
+
+\subsection{Array or Linked List implementation}
+\textbf{Linked Lists}
+\begin{itemize}
+  \item good match to positional ADT
+  \item efficient insertion and deletion
+  \item simpler behaviour as collection grows
+  \item modifications can be made as collection iterated over
+  \item space not wasted by list not having maximum capacity
+\end{itemize}
+\textbf{Arrays}
+\begin{itemize}
+  \item good match to index-based ADT
+  \item caching makes traversal fast in practice
+  \item no extra memory needed to store pointers
+  \item allow random access (retrieve element by index)
+\end{itemize}
+
+% Section 3  ----------------------------------------------------------------------------------------
+\section{Stacks and queues}
+These ADTs are forms of List with restricted insertiosn and removals
+\begin{itemize} 
+  \item stacks follow last-in-first-out (LIFO).
+  \item queues follows first-in-first-out (FIFO).
+\end{itemize}
+\newpage
+
+\subsection{Stacks}
+\begin{itemize}
+  \item push(e): inserts an element, e
+  \item pop(): removes and returns the last inserted element
+  \item top(): returns the last inserted element without removing it
+  \item size(): returns the number of elements in the stack
+  \item isEmpty(): indicates whether no elements are stored
+\end{itemize}
+\textbf{Applications:}
+\begin{itemize}
+  \item Keep track of a history that allows undoing such as Web browser history or undo sequence in a text editor.
+  \item Chain of method calls in a language supporting recursion
+  \item Context-free grammars
+  \item Auxiliary data structure for algorithms
+  \item Component of other data structures
+\end{itemize}
+\textbf{Array based implementation}\\
+Array has capacity N. Add elements from left to right. A variable t keeps track of the index of the top element. space
+used is O(N). Each operation takes O(1) time.
+\begin{pseudo}
+  \I \DEF{push}{e: element} \comment{O(1)}
+  \I \1 \IF{t = N - 1}
+  \I \2 \return{"Stack is full"}
+  \I \1 \ELSE
+  \I \2 t \assign t + 1
+  \I \2 S[t] \assign e
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{pop}{} \comment{O(1)}
+  \I \1 \IF{isEmpty()}
+  \I \2 \return{"Stack is empty"}
+  \I \1 \ELSE
+  \I \2 t \assign t -1
+  \I \2 \return{S[t+1]}
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{size}{}
+  \I \1 \return{t+1}
+\end{pseudo}
+
+\subsection{Queues}
+\begin{itemize}
+  \item enqueue(e): inserts an element, e, at the end of the queue
+  \item dequeue(): removes and returns element at the front of the queue
+  \item first(): returns the element at the front without removing it
+  \item size(): returns the number of elements stored
+  \item isEmpty(): indicates whether no elements are stored
+\end{itemize}
+\textbf{Applications:}
+\begin{itemize}
+  \item Waiting lists, bureaucracy
+  \item Access to shared resources (e.g., printer)
+  \item Multiprogramming
+  \item Auxiliary data structure for algorithms
+  \item Component of other data structures
+\end{itemize}
+\textbf{Array based implementation}\\
+Array has capacity N. Space used is O(N). Each operation takes O(1) time. Can wrap around an array. start: index of the front element.
+end: index past the last element. size: number of stored elements. end = (start + size) mod N, so we only need to keep track of start and size.
+\begin{pseudo}
+  \I \DEF{enqueue}{e: element} \comment{O(1)}
+  \I \1 \IF{size() = N}
+  \I \2 \return{"Queue is full"}
+  \I \1 \ELSE
+  \I \2 end \assign (start + size()) mod N
+  \I \2 Q[end] \assign e
+  \I \2 size \assign size + 1
+\end{pseudo}
+\begin{pseudo}
+  \I \DEF{dequeue}{} \comment{O(1)}
+  \I \1 \IF{isEmpty()}
+  \I \2 \return{"Queue is empty"}
+  \I \1 \ELSE
+  \I \2 e \assign Q[start]
+  \I \2 start \assign (start + 1) mod N
+  \I \2 size \assign size - 1
+  \I \2 \return{e}
+\end{pseudo}
+
 
 \end{document}
