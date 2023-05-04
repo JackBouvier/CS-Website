@@ -54,10 +54,13 @@
 }
 \newcommand{\PI}{\par\textbullet\hspace{5pt}}
 \setlist[itemize]{itemsep=1pt}
+\newcommand{\NL}{\par\hspace{12.5pt}}
+\setlist[itemize]{itemsep=1pt}
 
 % Custom commands
 \newcommand{\for}[1]{\textbf{for} #1 \textbf{do}}
 \newcommand{\IF}[1]{\textbf{if} #1 \textbf{then}}
+\newcommand{\ELIF}[1]{\textbf{else if} #1 \textbf{then}}
 \newcommand{\ELSE}{\textbf{else}}
 \newcommand{\return}[1]{\textbf{return} #1}
 \newcommand{\assign}{ $\leftarrow$ }
@@ -184,17 +187,153 @@ but before its right subtree.
   \I \2 \return{h + 1}
 \end{pseudo}
 
+% Section 4  ----------------------------------------------------------------------------------------
+\section{Binary Search Trees}
+A binary search tree is a binary tree storing keys (or key-value pairs) satisfying the following BST property.
+\textbf{"For any node v in the tree and any node u in the left subtree of v and any node w in the right subtree of v,
+key(u) < key(v) < key(w)"}
+
+\subsection{BST Implementation}
+To simplify BST implementation, keys (or key-value pairs) are only stored in internal noves and not extreenal nodes,
+with external nodes being null.
+To search for a key k, we trace a downward path starting at the root. To decide whether to go left or right,
+we compare the key of the current node v with k. If we reach an external node, this means that the key is not 
+in the data structure.
+\begin{pseudo}
+  \I \DEF{search}{k, v}
+  \I \1 \IF{v.isExternal()}
+  \I \2 \return{v} \comment{unsuccessful search}
+  \I \1 \IF{k = v.key()}
+  \I \2 \return{v} \comment{successful search}
+  \I \1 \IF{k < v.key()}
+  \I \2 \return{search(k, v.left)}
+  \I \1 \ELSE \comment{k > v.key()}
+  \I \2 \return{search(k, v.right)}
+\end{pseudo}
+Runs in O(h) time, where h is the height of the tree. In the wort case h = n-1 and in the best case, $h <= log_2n$
+
+To perform operation put(k, 0), we search for key k (using search). If k is found in the tree, replace the corresponding
+value by o. If k is not found, let w be the external node reached by the seached by the search. We replace w with an
+internal node storing key k and value o and two external nodes as children. The new node is a leaf and the tree is
+proper. The operation put runs in O(h) time.
+
+To perform operation remove(k), we search for key k (using search) to find the node w holding k. We distinguish between two cases
+being, w has one external child and w having two internal children. If k is not in the tree, we can either throw an exception or do
+nothing depending on the ADT specs.
+
+\begin{itemize}
+  \item \textbf{Deletion Case 1}: Suppose that the node w we want to remove has an external child, which
+  we call z. To remove w we remove w and z from the tree. We then promote the other child of w to take w's place.
+  This preserves the BST property.
+  \item \textbf{Deletion Case 2}: Suppose that the node w we want to remove has two internal children. To remove w,
+  we find the internal node y following w in an inorder traversal (i.e., y has the smallest key among the right subtree under w).
+  we copy the entry from y into node w. we remove node y and its left child z, whcih must be external. This preserves the BST property.
+\end{itemize}
+
+\begin{pseudo}
+  \I \DEF{remove}{k}
+  \I \1 w \assign search(k, root)
+  \I \1 \IF{w.isExternal()}
+  \I \2 \return{null} \comment{key not found}
+  \I \1 \ELIF{w has at least one external child z}
+  \I \2 remove z
+  \I \2 promote the other hcild of w to take w's place
+  \I \2 remove w
+  \I \1 \ELSE \comment{w has two internal children}
+  \I \2 y \assign w's successor in an inorder traversal
+  \I \2 replace contents of w with entry from y
+  \I \2 remove y as above
+\end{pseudo}
+
+\textbf{Complexity}
+Consider a binary search tree with n items and height h. The sapce used is O(n) and get, put and remove take O(h). The height h can be n in the
+worst case and log(n) in the best case. Therefore, using better insertion routines can drastically cut running times.
+
+\subsection{Duplicate key values in BST}
+It is possible to allow duplicates, but it comes at the cost of additional compleixty.
+\begin{itemize}
+  \item Allowing left descendants to be equal to the parent. i.e. $key(left descendant) <= key(node) <= key(right descendant)$ 
+  \item Using a list to store duplicates.
+\end{itemize}
+
+\subsection{Range Queries}
+A range querey is defined by two values $k_1$ and $k_2$. We are to find all ekys k stored in T such that $k_1 <= k <= k_2$.
+The algorithm is a restricted version of inorder traversal. When at node v:
+\begin{itemize}
+  \item If $key(v) < k_1$: Recursively search right subtree
+  \item If $k_1 <= key(v) <= k_2$: Recursively search left subtree, add v to range output, search right subtree.
+  \item If $k_2 < key(v)$: REcursively search left subtree
+\end{itemize}
+
+\begin{pseudo}
+  \I \DEF{range\_search}{T, k1, k2}
+  \I \1 output \assign []
+  \I \1 range(T.root, k1, k2)
+\end{pseudo}
+
+\begin{pseudo}
+  \I \DEF{range}{v, k1, k2}
+  \I \1 \IF{v is external}
+  \I \2 \return{null}
+  \I \1 \IF{key(v) > k2}
+  \I \2 range(v.right, k1, k2)
+  \I \1 \ELIF{key(v) < k1}
+  \I \2 range(v.right, k1, k2)
+  \I \1 \ELSE
+  \I \2 \hspace{1.1pt} range(v.left, k1, k2)
+  \I \2 output.append(v)
+  \I \2 range(v.right, k1, k2)
+\end{pseudo}
+\includegraphics[width=\textwidth]{image5.png}
+
+\textbf{Performance}
+Let $P_1$ and $P_2$ be the binary search paths to $k_1$ and $k_2$. We say a node v is a:
+\begin{itemize}
+  \item Boundary node if v in $P_1$ or $P_2$
+  \item Inside node if key(v) in [$k_1$, $k_2$] but not in $P_1$ or $P_2$
+  \item Outside node if key(v) not in [$k_1$, $k_2$] and not in $P_1$ or $P_2$
+\end{itemize}
+
+The alogirithm only vists boundary and inside nodes and $|inside nodes| <= |output|$ and
+$|boundary nodes| <= 2 * tree height$. Therefore, since we only spend O(1) time per node 
+we visit, the total running time of range search is O($|output| + tree height$)
+
+\section{Maintaining a balanced BST}
+Ranked balanced trees are a family of balanced BST implementations that use the idea of
+keeping a “rank” for every node, where r(v) acts as a proxy measure of the size of the 
+subtree rooted at v. This is primarily done to reduce the discrepancy between the ranks of
+left and right subtrees.
+
+\subsection{AVL trees}
+AVL trees are rank-balanced trees, where r(v) is its height of the subtree rooted at v.
+Balance constraint: The ranks of the two children of every internal-node differ by at most 1
+
+\vspace{10pt}
+\textbf{Proof (by induction)}: The height of an AVL tree stroing n keys is O(logn)
+\begin{Proof}
+  \PI Let N(h) be the minimum number of keys of an AVL tree of height h.
+  \PI We can easily see that N(1) = 1 and N(2) = 2
+  \PI Clearly N(h) > N(h-1) for any h >= 2.
+  \PI For For h > 2, the smallest AVL tree of height h contains the root node, one AVL 
+  \NL subtree of height h-1 and another of height at least h-2:
+  \PI N(h) >= 1 + N(h-1) + N(h-2) > 2 N(h-2)
+  \PI By induction we can show that for h even N(h) >= $2^{h/2} $
+  \PI Taking logarithms: h < 2 log N(h)
+  \PI Thus the height of an AVL tree is O(log n)
+\end{Proof}
+
+\subsection{Insertion in AVL trees}
+Suppose we are to insert a key k into our tree:
+\begin{itemize}
+  \item If k is in the tree, search for k ends at node holding k. There is nothing to do so tree structure does not change
+  \item If k is not in the tree, search for k ends at external node w. Make this be a new internal node containing key k
+  \item The new tree has BST property, but it may not have AVL balance property at some ancestor of w since some ancestors 
+  of w may have increased their height by 1 and every node that is not an ancestor of w hasn’t changed its height.
+  \item We use rotations to re-arrange tree to re-establish AVL property, while keeping BST property.
 
 
-
-
-
-
-
-
+\end{itemize}
 
 
 
 \end{document}
-
-
