@@ -165,7 +165,7 @@ but before its right subtree.
   \includegraphics[width=\textwidth]{image3.png}
 \end{minipage}
 
-% Section 3  ----------------------------------------------------------------------------------------
+% Section 4  ----------------------------------------------------------------------------------------
 \section{Euler Tour Traversal \& Some code}
 \includegraphics[width=0.90\textwidth]{image4.png}
 \vspace{20pt}
@@ -187,7 +187,7 @@ but before its right subtree.
   \I \2 \return{h + 1}
 \end{pseudo}
 
-% Section 4  ----------------------------------------------------------------------------------------
+% Section 5  ----------------------------------------------------------------------------------------
 \section{Binary Search Trees}
 A binary search tree is a binary tree storing keys (or key-value pairs) satisfying the following BST property.
 \textbf{"For any node v in the tree and any node u in the left subtree of v and any node w in the right subtree of v,
@@ -298,6 +298,7 @@ The alogirithm only vists boundary and inside nodes and $|inside nodes| <= |outp
 $|boundary nodes| <= 2 * tree height$. Therefore, since we only spend O(1) time per node 
 we visit, the total running time of range search is O($|output| + tree height$)
 
+% Section 6  ----------------------------------------------------------------------------------------
 \section{Maintaining a balanced BST}
 Ranked balanced trees are a family of balanced BST implementations that use the idea of
 keeping a “rank” for every node, where r(v) acts as a proxy measure of the size of the 
@@ -330,10 +331,102 @@ Suppose we are to insert a key k into our tree:
   \item The new tree has BST property, but it may not have AVL balance property at some ancestor of w since some ancestors 
   of w may have increased their height by 1 and every node that is not an ancestor of w hasn’t changed its height.
   \item We use rotations to re-arrange tree to re-establish AVL property, while keeping BST property.
-
-
 \end{itemize}
 
+% Section 7  ----------------------------------------------------------------------------------------
+\newpage
+\section{Re-establishing AVL property}
+\begin{itemize}
+  \item Let w be the location of a newly inserted node. (54)
+  \item Let z be the lowest ancestor of w, whose children heights differ by 2.
+  \item Let y be the child of z that is the ancestor of w.
+  \item Let x be the child of y that is is the ancestor of w.
+\end{itemize}
+\includegraphics[width=\textwidth]{image6.png}
 
+\subsection{Augmenting BST with a height attribute}
+But how do we know the height of each node? If we had to compute this from scratch it would take O(n) time
+Therefore, we need to have this pre-computed and update the height value after each insertion and rebalancing operation:
+After we create a node w, we should set its height to be 1, and then update the height of its ancestors. After we rotate 
+(z, y, x) we should update their height and that of their ancestors. Thus, we can maintain the height only using O(h) work 
+per insert
 
+\newpage
+\begin{pseudo}
+  \I \DEF{reststructure}{x} \comment{O{1}}
+  \NL \textbf{Input:} A node x of a binary tree T that has boath a parent y and a grandparent z.
+  \NL \textbf{Output:} The tree T after a trinode restrcucting (single or double roation)
+  \I  Let (a,b,c) be the left-to-right (inorder) listing of the nodes x, y, and z, and let 
+  \NL (T0,T1,T2,T3) be the left-to-right (inorder) listing of the four subtrees of x, y, and z 
+  \NL that are not rooted at x, y, and z. 
+  \I  Replace the subtree with a new subtree rooted at b.
+  \I  Let a be the left child of b and let T0 and T1 be the left and right subtrees of a.
+  \I  Let c be the right child of b and let T2 and T3 be the left and right subtrees of c.
+  \I  Recalculate the heights of a, b, and c from the values stored at their children
+  \I  \return{b}
+\end{pseudo}
+
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{image7.png}
+  \includegraphics[width=0.75\textwidth]{image8.png}
+\end{center}
+
+\subsection{Removal in AVL trees}
+\textbf{Suppose we are to remove a key k from our tree:}
+\begin{itemize}
+  \item If k is not in the tree, search for k ends at external node. There is nothing to do so tree structure does not change.
+  \item If k is in the tree, search for k performs usual BST removal leading to removing a node with an external child and promoting its other child, which we call w.
+  \item The new tree has BST property, but it may not have AVL balance property at some ancestor of w since some ancestors of w may have decreased their height by 1 and every node that is not an ancestor of w hasn’t changed its heights.
+  \item We use rotations to rearrange tree and re-establish AVL property, while keeping BST property.
+\end{itemize}
+\textbf{Re-establishing AVL property}
+\begin{itemize}
+  \item Let w be the parent of deleted node.
+  \item Let z be the lowest ancestor of w, whose children heights differ by 2.
+  \item Let y be the child of z with larger height (y is not an ancestor of w).
+  \item Let x be child of y with larger height.
+\end{itemize}
+\includegraphics[width=\textwidth]{image9.png}
+This restores the AVL property at z, but it may upset the balance of another node higher in the tree, we must continue checking for balance until the root of T is reached.
+
+\subsection{AVL Tree Performance}
+The data structure uses O(n) space. Height of the tree O(log n). Searching takes O(log n) time. Insertion takes O(log n) time. Removal takes O(log n) time
+
+% Section 8  ----------------------------------------------------------------------------------------
+\section{Map ADT}
+\begin{itemize}
+  \item get(k): if the map M has an entry with key k, return its associated value.
+  \item put(k, v): if key k is not in M, then insert (k, v) into the map M; else, replace the existing value associated to k with v.
+  \item remove(k): if the map M has an entry with key k, remove it.
+  \item size(), isEmpty()
+  \item entrySet(): return an iterable collection of the entries in M.
+  \item values(): return an iterable collection of the values in M.
+  \item keySet(): return an iterable collection of the keys in M.
+\end{itemize}
+
+\subsection{Sorted map ADT (extra methods)}
+\begin{itemize}
+  \item firstEntry() returns the entry with the smallest key; if map is empty, returns null.
+  \item lastEntry() returns the entry with the largest key; if map is empty, returns null.
+  \item ceilingEntry(k) returns the entry with the least key that is greater than or equal to k (or null, if no such entry exists).
+  \item floorEntry(k) returns the entry with the greatest key that is less than or equal to k (or null, if no such entry exists).
+  \item lowerEntry(k) returns the entry with the greatest key that is strictly less than k (or null, if no such entry exists).
+  \item higherEntry(k) returns the entry with least key that is strictly greater than k (or null, if no such entry exists).
+  \item subMap(k1,k2) returns an iteration of all the entries with key greater than or equal to k1 and strictly less than k2.
+\end{itemize}
+
+\subsection{List-Based (unsorted) Map}
+We can implement a map using an unsorted list of key-item pairs
+To do a get and put we may have to traverse the whole list, so
+those operations take O(n) time.
+Only feasible if map is very small or if we put things at the end
+and do not need to perform many gets (i.e., system log) 
+
+\subsection{Tree-Based (sorted) Map}
+We can implement a sorted map using an AVL tree, where each
+node stores a key-item pair
+To do a get or a put we search for the key in the tree, so these
+operations take O(h) time, which can be O(log n) if the tree is
+balanced.
+Only feasible if there is a total ordering on the keys
 \end{document}
