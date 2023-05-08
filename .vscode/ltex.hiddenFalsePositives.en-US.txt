@@ -5,3 +5,5 @@
 {"rule":"I_LOWERCASE","sentence":"^\\Qsize() (int) number of elements in the store isEmpty() (boolean) whether the list is empty get(i) return element at index i set(i,e) replace the element at i with e and return the replaced element add(i,e) insert element e at index i and shift up elements with indexes >= i remove(i) remove and return the element at index i and shift down indexes >= i\\E$"}
 {"rule":"ENGLISH_WORD_REPEAT_RULE","sentence":"^\\QA[j+1] = A[j] A[i] e n n + 1\\E$"}
 {"rule":"ENGLISH_WORD_REPEAT_RULE","sentence":"^\\QA[j+1] = A[j] A[i] e n n + 1 remove.i: int.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QA. pq new.\\E$"}
+{"rule":"SENTENCE_WHITESPACE","sentence":"^\\QA.\\E$"}
