@@ -391,42 +391,4 @@ This restores the AVL property at z, but it may upset the balance of another nod
 
 \subsection{AVL Tree Performance}
 The data structure uses O(n) space. Height of the tree O(log n). Searching takes O(log n) time. Insertion takes O(log n) time. Removal takes O(log n) time
-
-% Section 8  ----------------------------------------------------------------------------------------
-\section{Map ADT}
-\begin{itemize}
-  \item get(k): if the map M has an entry with key k, return its associated value.
-  \item put(k, v): if key k is not in M, then insert (k, v) into the map M; else, replace the existing value associated to k with v.
-  \item remove(k): if the map M has an entry with key k, remove it.
-  \item size(), isEmpty()
-  \item entrySet(): return an iterable collection of the entries in M.
-  \item values(): return an iterable collection of the values in M.
-  \item keySet(): return an iterable collection of the keys in M.
-\end{itemize}
-
-\subsection{Sorted map ADT (extra methods)}
-\begin{itemize}
-  \item firstEntry() returns the entry with the smallest key; if map is empty, returns null.
-  \item lastEntry() returns the entry with the largest key; if map is empty, returns null.
-  \item ceilingEntry(k) returns the entry with the least key that is greater than or equal to k (or null, if no such entry exists).
-  \item floorEntry(k) returns the entry with the greatest key that is less than or equal to k (or null, if no such entry exists).
-  \item lowerEntry(k) returns the entry with the greatest key that is strictly less than k (or null, if no such entry exists).
-  \item higherEntry(k) returns the entry with least key that is strictly greater than k (or null, if no such entry exists).
-  \item subMap(k1,k2) returns an iteration of all the entries with key greater than or equal to k1 and strictly less than k2.
-\end{itemize}
-
-\subsection{List-Based (unsorted) Map}
-We can implement a map using an unsorted list of key-item pairs
-To do a get and put we may have to traverse the whole list, so
-those operations take O(n) time.
-Only feasible if map is very small or if we put things at the end
-and do not need to perform many gets (i.e., system log) 
-
-\subsection{Tree-Based (sorted) Map}
-We can implement a sorted map using an AVL tree, where each
-node stores a key-item pair
-To do a get or a put we search for the key in the tree, so these
-operations take O(h) time, which can be O(log n) if the tree is
-balanced.
-Only feasible if there is a total ordering on the keys
 \end{document}
