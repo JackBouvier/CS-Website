@@ -7,3 +7,4 @@
 {"rule":"ENGLISH_WORD_REPEAT_RULE","sentence":"^\\QA[j+1] = A[j] A[i] e n n + 1 remove.i: int.\\E$"}
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QA. pq new.\\E$"}
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QA.\\E$"}
+{"rule":"THE_SUPERLATIVE","sentence":"^\\QThere is a tree of the shortest paths from a start vertex to all the other vertices (Shortest path tree).\\E$"}

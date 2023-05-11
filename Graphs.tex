@@ -290,6 +290,287 @@ test whether a graph is connected or compute a spanning tree of a graph (if conn
   \includegraphics[width=\textwidth]{image17.png}
 \end{minipage}
 
-\end{document}
-
 % Section 6  ----------------------------------------------------------------------------------------
+\section{Weighted Graphs}
+In a weighted graph, each edge has an associated numerical value, called the weight of the edge.
+Edge weights may represent, distances, costs, etc.
+
+\subsection{Shortest Paths}
+Given an edge weighted graph and two vertices u and v, we want to find a path of minimum total weight between u and v, 
+where the weight of a path is the sum of the weights of its edges.
+
+\vspace{10pt}
+\textbf{Properties:}
+\begin{itemize}
+  \item A subpath of the shortest path is itself the shortest path.
+  \item There is a tree of the shortest paths from a start vertex to all the other vertices (Shortest path tree).
+\end{itemize}
+\includegraphics[width=\textwidth]{image18.png}
+
+% Section 7  ----------------------------------------------------------------------------------------
+\section{Dijkstra’s Algorithm}
+\begin{minipage}[t]{0.5\textwidth}
+  \textbf{Input:}
+  \begin{itemize}
+  \item Graph $G = (V, E)$.
+  \item Edge weights $w : E \rightarrow R^+$.
+  \item Start vertex $s$.
+  \end{itemize}
+  \textbf{Output:}
+  \begin{itemize}
+  \item Distance from $s$ to all $v$ in $V$.
+  \item The shortest path tree rooted at $s$.
+  \end{itemize}
+  \textbf{Assumptions:}
+  \begin{itemize}
+  \item $G$ is connected and undirected.
+  \item Edge weights are nonnegative.
+  \end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.49\textwidth}
+  \textbf{High level idea:}
+  \begin{itemize}
+  \item Maintain a distance estimate $D[v] \geq dist_w(s, v)$ for all $v$ in $V$.
+  \item Keep track of a subset $S$ of $V$ such that $D[v] = dist_w(s, v)$ for all $v$ in $S$.
+  \end{itemize}
+  \textbf{Initially:}
+  \begin{itemize}
+  \item $D[s] = 0$.
+  \item $D[v] = \infty$ for all $v$ in $V - s$.
+  \end{itemize}
+  \textbf{In each iteration we:}
+  \begin{itemize}
+  \item add to $S$ vertex $u$ in $V - S$ with smallest $D[u]$.
+  \item update $D$-values for vertices adjacent to $u$.
+  \end{itemize}
+\end{minipage}
+
+\subsection{Edge Relaxation}
+\includegraphics[width=\textwidth]{image19.png}
+
+\subsection{Dijkstra’s Algorithm pseudocode}
+\begin{pseudo}
+  \I \DEF{Dijkstra}{G, w, s} \comment{Total run time is O(n + m log n)}
+  \I \1 \for{v in G.vertices()} \comment{Set things up for Dijkstra: O(n)}
+  \I \2 D[v] \assign $\infty$
+  \I \2 parent[v] \assign null
+  \I \1 D[s] \assign 0
+  \I \1 Q \assign new PriorityQueue() for \{(v, D[v]) : v in V\} \comment{Key is depth estimate}
+  \NL
+  \I \1 \while{Q is not empty} \comment{iteratively add vertices to S: O(m log n)}
+  \I \2 u \assign Q.removeMin()
+  \I \2 \for{z in G.incidentEdges(u)} \comment{relax edges out of u: O(deg(u))}
+  \I \3 \IF{D[z] > D[u] + w(u, z)}
+  \I \4 D[z] \assign D[u] + w(u, z)
+  \I \4 parent[z] \assign u
+  \I \4 Q.update\_PriorityQueue(z, d[z])
+  \I \1 \return{D, parent} \comment{dictionaries (vertex to shortest path from s) (vertex to parent) }
+\end{pseudo}
+
+\subsection{Dijkstra’s Algorithm Analysis}
+\begin{itemize}
+  \item Assuming the graph is connected (so $m \geq n-1$), the algorithm spends $O(m)$ time on everything except priority queue operations.
+  \item The priority queue operations involve $n$ inserts, $m$ decrease\_key operations, and $n$ remove\_min operations.
+  \item Using a binary heap for the priority queue, the total time complexity is $O(m \log n)$.
+  \item Using a Fibonacci heap for the priority queue, the total time complexity is $O(m + n \log n)$, due to the $O(1)$ amortized time for decrease\_key operations.
+\end{itemize}
+\begin{center}
+  \includegraphics[width=0.9\textwidth]{image20.png}
+\end{center}
+
+
+\subsection{Correctness of Dijkstra’s Algorithm}
+To prove Dijkstra’s correctness, we can use induction on the number of vertices visited by the algorithm. 
+Let's denote the set of visited vertices as S and the set of unvisited vertices as V-S.
+
+\vspace{10pt}
+\textbf{Base case:}\\
+At the start, the distance of the starting vertex s is 0, which is the correct shortest path distance from s 
+to itself.
+
+\vspace{10pt}
+\textbf{Inductive step}\\
+Assume that the algorithm maintains the correct shortest path distances for all vertices visited so far. Now 
+we'll show that after visiting the next vertex u with the smallest distance among the unvisited vertices, 
+the algorithm still maintains the correct shortest path distances for all visited vertices.
+\begin{enumerate}
+  \item Consider the shortest path P from the starting vertex s to u. We claim that P does not contain any other 
+  unvisited vertices besides u. If P did contain another unvisited vertex w, the distance from s to w would be 
+  shorter than the distance from s to u, which contradicts our choice of u as the closest unvisited vertex.
+  \item After visiting u, we update the distance estimates for the neighbors of u. Since we've assumed that the 
+  shortest path from s to u is correct, any updated distance estimate for a neighbor v of u will also be correct.
+  This is because the new distance estimate for v takes into account the correct shortest path distance from s to u, 
+  and the shortest path from s to v through u does not contain any other unvisited vertices (from point 1).
+\end{enumerate}
+By induction, Dijkstra's algorithm maintains the correct shortest path distances for all visited vertices. 
+When all vertices are visited, the algorithm has computed the correct shortest path distances for the entire 
+graph.
+
+% Section 8  ----------------------------------------------------------------------------------------
+\section{Minimum Spanning Trees}
+Given a connected graph $G = (V, E)$ with real-valued edge weights $c_e$, an MST is a subset of the 
+edges $T \subseteq E$ such that $T$ is a spanning tree whose sum of edge weights is minimized.
+\begin{center}
+  \includegraphics[width=0.8\textwidth]{image21.png}
+\end{center}
+
+\subsection{MST properties}
+\textbf{Simplifying assumption:} All edge costs $c_e$ are distinct.
+
+\vspace{10pt}
+\textbf{Cut property:} Let S be any subset of nodes, and let e be the min cost edge with exactly one endpoint 
+in S. Then the MST contains e.
+
+\vspace{10pt}
+\textbf{Cycle property:} Let C be any cycle, and let f be the max cost edge belonging to C. Then the MST does
+not contain f.
+
+\subsection{Cycles and Cuts}
+\begin{center}
+  \includegraphics[width=0.8\textwidth]{image22.png}
+  \includegraphics[width=0.8\textwidth]{image23.png}
+\end{center}
+
+% Section 9  ----------------------------------------------------------------------------------------
+\section{Prim's Algorithm}
+Every time we add an edge we follow cut property!
+\begin{pseudo}
+  \I \DEF{Prim}{G, c} \comment{C is the cost function. Total run time is O(n + m log n)}
+  \I \1 \for{v in G.vertices()} \comment{Set things up for Prim: O(n)}
+  \I \2 D[v] \assign $\infty$
+  \I \2 parent[v] \assign null
+  \I \1 u \assign any vertex in V
+  \I \1 D[u] \assign 0
+  \I \1 Q \assign new PriorityQueue() for \{(v, D[v]) : v in V\} \comment{Key is depth estimate}
+  \I \1 S \assign []
+  \NL
+  \I \1 \while{Q is not empty} \comment{iteratively add vertices to S: O(m log n)}
+  \I \2 u \assign Q.removeMin()
+  \I \2 S.append(u)
+  \I \2 \for{z in G.incidentEdges(u)} \comment{relax edges out of u: O(deg(u))}
+  \I \3 \IF{z not in S and D[z] > c(u, z)}
+  \I \4 parent[z] \assign u
+  \I \4 decrease PriorityQueue d[z] to c(u, z)
+  \I \1 \return{parent} \comment{parent is a dictionary that maps each vertex to its parent}
+\end{pseudo}
+
+\subsection{Prim's Algorithm Analysis}
+Similar analysis to Dijkstra’s algorithm: O(m log n) using a heap and O(m + n log n) using Fibonacci heap.
+
+\subsection{Dijkstra vs Prim and Kruskal}
+MPT algorithms finds the minimum spanning tree of a connected, undirected graph, while Dijkstra's 
+algorithm computes the shortest paths from a source vertex to all other vertices in a directed or 
+undirected graph.
+\begin{itemize}
+  \item Shortest Path: The goal of finding the shortest path from a source vertex to all other vertices is 
+  to identify the path with the minimum total weight between the source vertex and each of the other vertices 
+  in the graph. The output of a shortest path algorithm (e.g., Dijkstra's algorithm) is a set of paths from the 
+  source vertex to all other vertices in the graph.
+  \item Minimum Spanning Tree: The goal of finding an MST is to create a tree that spans all vertices in the 
+  graph while minimizing the sum of the edge weights. It connects all vertices without cycles and minimizes 
+  the total edge weight. The output of an MST algorithm (e.g., Prim's or Kruskal's algorithm) is a tree that 
+  spans all vertices in the graph with the minimum total edge weight.
+\end{itemize}
+
+\subsection{Correctness of Prim's Algorithm}
+We'll prove that the tree constructed by Prim's algorithm is a minimum spanning tree (MST) by induction 
+using the cut property.
+
+\vspace{10pt}
+\textbf{Base case:}\\
+Initially, the set T is empty, which is a valid subset of the MST.
+
+\vspace{10pt}
+\textbf{Inductive hypothesis:} \\
+Assume after k iterations, the set T contains k edges of the MST.
+
+\vspace{10pt}
+\textbf{Inductive step: } \\
+In the (k+1)-th iteration, Prim's algorithm selects the lightest edge e crossing a cut C. We want to show that 
+e is part of the MST.
+\begin{enumerate}
+\item If no MST M exists that contains edges in T but not edge e, then Prim's algorithm has already built the 
+MST, and the proof is complete.
+\item If an MST M exists, find another edge f in M connecting the same vertex sets as edge e. Adding f to the 
+tree formed by Prim's algorithm creates a cycle crossing the cut C.
+\item Edge e has the minimum weight among edges crossing the cut C, so the weight of e is less than or equal 
+to the weight of f.
+\item Construct a new spanning tree $M_1$ by replacing f with e in M. The weight of $M_1$ is less than or equal 
+to the weight of M.
+\item Since M is an MST and the weight of $M_1$ is no greater than M, $M_1$ is also an MST containing edge e.
+\end{enumerate}
+Thus, the edge e selected by Prim's algorithm in the (k+1)-th iteration is part of an MST. 
+Therefore, by induciton, Prim's algorithm correctly constructs an MST.
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{image24.png}
+\end{center}
+
+% Section 10  ----------------------------------------------------------------------------------------
+\section{Kruskal's Algorithm}
+Kruskal's Algorithm works by examining the edges in ascending order of their weights and adding 
+them to the MST if they do not create a cycle. Here's an expanded explanation of the algorithm:
+
+\begin{enumerate}
+  \item Sort all the edges in the graph in ascending order of their weights.
+  \item Initialize the set $T$ as an empty set. This set will store the edges of the MST.
+  \item For each edge $e$ in the sorted list, do the following:
+  \begin{enumerate}
+    \item Case 1 (Cycle): If adding edge $e$ to $T$ results in a cycle, discard $e$ according to the 
+    cycle property. The cycle property states that in an MST, there cannot be any cycles. Discarding 
+    $e$ ensures that the resulting MST remains acyclic.
+    \item Case 2 (Cut): If adding edge $e$ to $T$ does not create a cycle, insert $e = (u, v)$ into 
+    $T$ according to the cut property. The cut property states that for any partition of the graph's 
+    vertices into two non-empty sets (a cut), the lightest edge crossing the partition must be included 
+    in the MST. In this case, $S$ represents the set of nodes in the connected component of vertex $u$. 
+    By adding edge $e$, we are connecting the components of vertices $u$ and $v$ while maintaining the 
+    properties of an MST.
+  \end{enumerate}
+  \item Repeat step 3 for all edges in the sorted list.
+  \item Once all edges have been processed, the set $T$ will contain the edges of the MST.
+\end{enumerate}
+
+\subsection{Union Find ADT}
+Data structure defined on a ground set of elements A used to keep track of an evolving partition.
+\begin{itemize}
+  \item make\_sets(A): makes |A| singleton sets with elements in A. O(n)
+  \item find(a): returns an id for the set element a belongs to. O(1)
+  \item union(a,b): union the sets elements a and b belong to. O(1)
+\end{itemize}
+\includegraphics[width=\textwidth]{image25.png}
+
+\subsection{Kurskal’s algorithm implementation}
+\begin{pseudo}
+  \I \DEF{Kruskal}{G, c} \comment{c is the cost function. Total run time is O(m log n)}
+  \I \1 sort E by increasing c-value order \comment{O(m log m)}
+  \I \1 T \assign []
+  \I \1 comp \assign make\_sets(V) \comment{O(n)}
+  \I \1 \for{e in E} \comment{O(m)}
+  \I \2 \IF{comp.find(e.u) != comp.find(e.v)}
+  \I \3 T.append(e)
+  \I \3 comp.union(e.u, e.v)
+  \I \1 \return{T}
+\end{pseudo}
+
+\subsection{Lexicographic Tiebreaking}
+To remove the assumption that all edge costs are distinct, we can perturb all edge costs by tiny amounts 
+to break any ties. The impact of this perturbation is minimal because Kruskal and Prim's algorithms only 
+interact with costs through pairwise comparisons. If the perturbations are sufficiently small, the MST with 
+perturbed costs will be the same as the MST with the original costs. For instance, if we assume that all 
+costs are integral, adding i/$n^2$ to each edge e\_i would not significantly alter the MST. Under these 
+perturbed weights, any MST found would still be an MST under the original weights, ensuring that 
+the algorithms continue to function correctly despite the small changes in edge costs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
