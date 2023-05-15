@@ -202,8 +202,9 @@ null reference instead of a link.
 \end{pseudo}
 
 \subsection{Doubly linked lists}
-A very natural way to implement a positional list is with a doublylinked list, so that it is easy/quick to find the position before.
-Each Node in a Doubly Linked List stores its element, and a link to the previous and next nodes.
+A very natural way to implement a positional list is with a doublylinked list, so that it is easy/quick to find 
+the position before. Each Node in a Doubly Linked List stores its element, and a link to the previous and next 
+nodes.
 \begin{pseudo}
   \I \DEF{insertBefore}{p, e} \comment{O(1)}
   \I \1 Instaniate a new node x
@@ -328,8 +329,9 @@ used is O(N). Each operation takes O(1) time.
   \item Component of other data structures
 \end{itemize}
 \textbf{Array based implementation}\\
-Array has capacity N. Space used is O(N). Each operation takes O(1) time. Can wrap around an array. start: index of the front element.
-end: index past the last element. size: number of stored elements. end = (start + size) mod N, so we only need to keep track of start and size.
+Array has capacity N. Space used is O(N). Each operation takes O(1) time. Can wrap around an array. start: index of the front 
+element. end: index past the last element. size: number of stored elements. end = (start + size) mod N, so we only need to 
+keep track of start and size.
 \begin{pseudo}
   \I \DEF{enqueue}{e: element} \comment{O(1)}
   \I \1 \IF{size() = N}
@@ -349,6 +351,4 @@ end: index past the last element. size: number of stored elements. end = (start 
   \I \2 size \assign size - 1
   \I \2 \return{e}
 \end{pseudo}
-
-
 \end{document}

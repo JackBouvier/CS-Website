@@ -146,8 +146,10 @@ avoid having many items being hashed to the same location.
 There are two general approaches that one can take when designing a hash function:
 
 \begin{enumerate}
-\item \textbf{View the key k as a tuple of integers}: In this approach, the key is seen as a tuple of integers $(x_1, x_2, \ldots, x_d)$ with each integer being in the range $[0, M-1]$ for some $M$.
-\item \textbf{View the key k as a large nonnegative integer}: In this approach, the key is seen as a large nonnegative integer that may have arbitrary length.
+\item \textbf{View the key k as a tuple of integers}: In this approach, the key is seen as a tuple of integers $(x_1, x_2, \ldots, x_d)$ 
+with each integer being in the range $[0, M-1]$ for some $M$.
+\item \textbf{View the key k as a large nonnegative integer}: In this approach, the key is seen as a large nonnegative integer that 
+may have arbitrary length.
 \end{enumerate}
 
 \subsection{Summing Components Approach}
@@ -157,17 +159,23 @@ The summing components approach is used for keys of the form $k = (x_1, x_2, \ld
 \item $h(k) = (\sum\limits_{i=1}^{d} x_i) \text{ mod } p$, where $p$ is a prime number
 \item $h(k) = \sum\limits_{i=1}^{d} x_i \cdot a^{d-i}$, where $a$ is some + integer chosen empirically to avoid collisions.
 \end{itemize}
-The first two options may cause problems because the hash codes are invariant under permutations of the key tuple. For example, "mate", "meat", "tame", and "team" all map to the same code. The third option solves this problem by making the hash code dependent on the order of the tuple.
+The first two options may cause problems because the hash codes are invariant under permutations of the key tuple. For example, 
+"mate", "meat", "tame", and "team" all map to the same code. The third option solves this problem by making the hash code 
+dependent on the order of the tuple.
 
 \subsection{Modular Division Approach}
 The modular division approach is used for keys that are positive integers.
 \begin{itemize}
 \item $h(k) = k \text{ mod } N$, where $N$ is some prime number.
 \end{itemize}
-If the keys are randomly and uniformly distributed in $[0, M]$ where $M \gg N$, then the probability that two keys collide is $1/N$. However, keys are usually not randomly distributed, so this approach may not work well in practice.
+If the keys are randomly and uniformly distributed in $[0, M]$ where $M \gg N$, then the probability that two keys collide 
+is $1/N$. However, keys are usually not randomly distributed, so this approach may not work well in practice.
 \subsection{Universal Hash Functions}
-A universal hash function is a type of hash function that is designed to produce a relatively uniform distribution of hash values for different input data, regardless of the specific characteristics of the input. To achieve this, a universal hash function uses randomization or other techniques to make the mapping between inputs and hash values unpredictable and independent of the input data.
-Universal hash functions are commonly used in various applications that require efficient and secure data hashing, such as cryptography, data compression, and data indexing, among others.
+A universal hash function is a type of hash function that is designed to produce a relatively uniform distribution of hash 
+values for different input data, regardless of the specific characteristics of the input. To achieve this, a universal hash 
+function uses randomization or other techniques to make the mapping between inputs and hash values unpredictable and 
+independent of the input data. Universal hash functions are commonly used in various applications that require efficient 
+and secure data hashing, such as cryptography, data compression, and data indexing, among others.
 
 \subsection{Random Linear Hash Functions}
 Used on keys k that are positive integers.
@@ -175,8 +183,10 @@ Used on keys k that are positive integers.
 \item $h(k) = ((a k + b) \text{ mod } p) \text{ mod } N$
 \end{itemize}
 Where $p$ is a prime number, and $a$ and $b$ are chosen uniformly at random from the interval $[1, p-1]$ with $a \neq 0$.
-The random choice of $a$ and $b$ ensures that the mapping between the keys and hash codes is unpredictable and independent of the specific characteristics of the input data. This makes the hash function resistant to certain types of attacks, such as those based on knowledge of the input data.
-One useful property of Random Linear Hash Functions is that if the keys are in the range $[0, M]$ and $p > M$, then the probability that two keys collide is $1/N$. 
+The random choice of $a$ and $b$ ensures that the mapping between the keys and hash codes is unpredictable and independent 
+of the specific characteristics of the input data. This makes the hash function resistant to certain types of attacks, such 
+as those based on knowledge of the input data. One useful property of Random Linear Hash Functions is that if the keys are in 
+the range $[0, M]$ and $p > M$, then the probability that two keys collide is $1/N$. 
 
 % Section 4  ----------------------------------------------------------------------------------------
 \section{Collision Handling}
@@ -198,13 +208,19 @@ outside the table.
   \I \DEF{remove}{k}
   \I \1 \return{A[h(k)].remove(k)}
 \end{pseudo}
-Assume that our hash function maps $n$ keys to independent uniform random values in the range $[0, N-1]$. Let $X$ be a random variable representing the number of items that map to a bucket in the array $A$. Then, $E(X) = n/N$, where the parameter $n/N$ is called the load factor of the hash table, usually denoted as $a$.
-The expected time for hash table operations is $O(1+a)$ when collisions are handled with separate chaining. However, the worst-case time is $O(n)$, which happens when all the items collide into a single chain.
+Assume that our hash function maps $n$ keys to independent uniform random values in the range $[0, N-1]$. Let $X$ be a random 
+variable representing the number of items that map to a bucket in the array $A$. Then, $E(X) = n/N$, where the parameter $n/N$ 
+is called the load factor of the hash table, usually denoted as $a$. The expected time for hash table operations is $O(1+a)$ 
+when collisions are handled with separate chaining. However, the worst-case time is $O(n)$, which happens when all the items 
+collide into a single chain.
 
 \subsection{Linear Probing}
-Linear Probing is a technique for handling collisions in a hash table by placing the colliding item in the next available cell (circularly). In other words, if the initial cell is already occupied, the algorithm checks the next cell, and so on until it finds an empty cell.
-Each cell inspected during the search for an empty cell is referred to as a probe. Colliding items can end up lumped together, causing future collisions to result in a longer sequence of probes.
-Linear Probing can be efficient when the load factor of the table is low, but as the table becomes more crowded, the likelihood of long sequences of probes and poor performance increases. 
+Linear Probing is a technique for handling collisions in a hash table by placing the colliding item in the next available cell 
+(circularly). In other words, if the initial cell is already occupied, the algorithm checks the next cell, and so on until it 
+finds an empty cell. Each cell inspected during the search for an empty cell is referred to as a probe. Colliding items can 
+end up lumped together, causing future collisions to result in a longer sequence of probes. Linear Probing can be efficient 
+when the load factor of the table is low, but as the table becomes more crowded, the likelihood of long sequences of probes and 
+poor performance increases. 
 \begin{pseudo}
   \I \DEF{get}{k}
   \I \1 i = h(k)
@@ -227,7 +243,9 @@ called DEFUNCT, which replaces deleted elements, to tell them
 apart from empty cells
 \begin{itemize}
   \item get(k): must pass over cells with DEFUNCT and keep probing until the element is found, or until reaching an empty cell.
-  \item put(k,v): search for the entry as in get(k), but we also remember the index j of the first cell we find that has DEFUNCT or empty. If we find key k, we replace the value there with v and return the previous value. If we don’t find k, we store (k, v) in cell with index j Throw exception if table is full.
+  \item put(k,v): search for the entry as in get(k), but we also remember the index j of the first cell we find that has DEFUNCT 
+  or empty. If we find key k, we replace the value there with v and return the previous value. If we don’t find k, we store (k, v) 
+  in cell with index j Throw exception if table is full.
   \item remove(k): search for the entry as in get(k). If found, replace it with the special item DEFUNCT and return element v
 \end{itemize}
 In the worst case, get, put, and remove take O(n) time.
@@ -250,13 +268,17 @@ is still often used due to its worst case guarantees on lookups.
 \textbf{The Power of Two Choices}
 
 \vspace{10pt}
-The Power of Two Choices is a technique for handling collisions in a hash table that uses two hash tables, $T1$ and $T2$, each of size $N$, and two hash functions, $h1$ and $h2$, for $T1$ and $T2$ respectively.
+The Power of Two Choices is a technique for handling collisions in a hash table that uses two hash tables, $T1$ and $T2$, each 
+of size $N$, and two hash functions, $h1$ and $h2$, for $T1$ and $T2$ respectively.
 
 \vspace{10pt}
-For an item with key $k$, there are only two possible places where we are allowed to store the item: $T1[h1(k)]$ or $T2[h2(k)]$. This restriction simplifies lookup dramatically, while still allowing worst-case $O(1)$ running time for get and remove operations.
+For an item with key $k$, there are only two possible places where we are allowed to store the item: $T1[h1(k)]$ or $T2[h2(k)]$.
+This restriction simplifies lookup dramatically, while still allowing worst-case $O(1)$ running time for get and remove operations.
 
 \vspace{10pt}
-The Power of Two Choices works by randomly selecting which of the two hash tables to use for each item, based on the hash codes generated by the two hash functions. By using two hash tables and two hash functions, the technique reduces the likelihood of collisions and spreads the items more evenly across the tables, improving performance.
+The Power of Two Choices works by randomly selecting which of the two hash tables to use for each item, based on the hash 
+codes generated by the two hash functions. By using two hash tables and two hash functions, the technique reduces the 
+likelihood of collisions and spreads the items more evenly across the tables, improving performance.
 \begin{pseudo}
   \I \DEF{get}{k} \comment{O(1)}
   \I \1 \IF{T1[h1(k)] != null and T1[h1(k)].key = k}
@@ -361,10 +383,11 @@ auxiliary values.
 
 \subsection{Practice vs Theory}
 \begin{itemize}
-\item In practice, hash table implementations are usually fast, and people use them as though \texttt{put}, \texttt{get}, and \texttt{remove} take $O(1)$ time.
-\item The analyses we covered in lecture assume uniformly random hash values, which are not possible to implement in practice. Removing these assumptions is an active area of research well beyond the scope of this class.
-\item In theory, we do not know of an implementation of hash tables that can perform \texttt{put}, \texttt{get}, and \texttt{remove} in $O(1)$ time in the worst case.
+\item In practice, hash table implementations are usually fast, and people use them as though \texttt{put}, \texttt{get}, 
+and \texttt{remove} take $O(1)$ time.
+\item The analyses we covered in lecture assume uniformly random hash values, which are not possible to implement in 
+practice. Removing these assumptions is an active area of research well beyond the scope of this class.
+\item In theory, we do not know of an implementation of hash tables that can perform \texttt{put}, \texttt{get}, 
+and \texttt{remove} in $O(1)$ time in the worst case.
 \end{itemize}
-
 \end{document}
-
