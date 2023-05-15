@@ -5,6 +5,10 @@
     font-family: 'Poppins', sans-serif;
     overscroll-behavior: none;
     scroll-behavior: smooth;
+    -webkit-user-select: none; /* Chrome, Safari, and Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer and Edge */
+    user-select: none; /* Standard syntax */
 }
   
 /* Header styles */
